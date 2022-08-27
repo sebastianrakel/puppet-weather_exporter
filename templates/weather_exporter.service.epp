@@ -1,0 +1,21 @@
+<%- | String $user,
+      String $group,
+      String $bin_path,
+| -%>
+# THIS FILE IS MANAGED BY PUPPET
+[Unit]
+Description=Weather Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=<%= $user %>
+Group=<%= $group %>
+ExecStart=<%= $bin_path %> -config_path /etc/weather_exporter/
+
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
